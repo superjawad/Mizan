@@ -10,3 +10,4 @@ Desktop.ini
 # Local env
 .env
 .DS_Store
+node_modules/

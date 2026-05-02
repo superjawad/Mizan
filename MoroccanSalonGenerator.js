@@ -575,6 +575,8 @@ export class MoroccanSalonGenerator {
 
   // ── Unified, Dynamic Table Placement Logic (Mida Only) ──────────────────────
   _placeTables(root, layout, backWallZ, roomDepth) {
+    if (!this.config.showMida) return;
+
     const cfg = this.config;
     const span = layout.backLength;
     const sofaDepth = cfg.seatDepth; 
