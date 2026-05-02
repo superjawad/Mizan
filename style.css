@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:         #e4e0db;
+  --bg-card:    #e4e0db;
+  --light:      #f5f2ee;
+  --shadow:     #c8c4be;
+  --text:       #3a3530;
+  --text-muted: #8a837a;
+  --accent:     #9e2a3a;
+  --accent2:    #c8892e;
+  --wood:       #5c3d1e;
+  --radius:     20px;
+  --panel-w:    300px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+}
+
+/* ── Canvas ── */
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 1;
+}
+
+/* ── Panel shell ── */
+#panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--panel-w);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  gap: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+#panel::-webkit-scrollbar { display: none; }
+
+/* ── Cards ── */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: 6px 6px 14px var(--shadow), -6px -6px 14px var(--light);
+}
+
+/* ── Logo / Header ── */
+.logo-block {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--text);
+}
+.logo-sub {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Section labels ── */
+.section-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+/* ── Layout switcher ── */
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.layout-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px 8px;
+  border: none;
+  border-radius: 12px;
+  background: var(--bg-card);
+  cursor: pointer;
+  box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light);
+  transition: all 0.18s ease;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+}
+.layout-btn svg { opacity: 0.5; transition: opacity 0.18s; }
+.layout-btn.active {
+  box-shadow: inset 3px 3px 7px var(--shadow), inset -3px -3px 7px var(--light);
+  color: var(--accent);
+}
+.layout-btn.active svg { opacity: 1; }
+
+/* ── Sliders ── */
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.slider-row:last-child { margin-bottom: 0; }
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.slider-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0.75;
+}
+.slider-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.slider-track {
+  height: 10px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  box-shadow: inset 3px 3px 6px var(--shadow), inset -3px -3px 6px var(--light);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+input[type="range"] {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: var(--bg-card);
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px var(--shadow), -2px -2px 5px var(--light);
+  border: none;
+  transition: transform 0.1s;
+}
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+/* ── View mode toggle ── */
+.toggle-row {
+  display: flex;
+  gap: 8px;
+}
+.neu-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: var(--bg-card);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-muted);
+  box-shadow: 4px 4px 8px var(--shadow), -4px -4px 8px var(--light);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  letter-spacing: 0.3px;
+}
+.neu-btn.active {
+  box-shadow: inset 3px 3px 7px var(--shadow), inset -3px -3px 7px var(--light);
+  color: var(--accent);
+}
+.neu-btn:active { transform: scale(0.97); }
+
+/* ── Color swatches ── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.color-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.color-item label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.swatch-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 7px var(--shadow), -3px -3px 7px var(--light);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.swatch-wrap:hover { transform: scale(1.08); }
+.swatch-wrap input[type="color"] {
+  width: 200%;
+  height: 200%;
+  border: none;
+  padding: 0;
+  margin: -50%;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+}
+
+/* ── BOM ── */
+.bom-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  align-items: baseline;
+}
+.bom-key {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.bom-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  text-align: right;
+}
+.bom-divider {
+  grid-column: 1 / -1;
+  height: 1px;
+  background: var(--shadow);
+  opacity: 0.3;
+  margin: 4px 0;
+}
+
+/* ── Collapsible ── */
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.collapsible-header .chevron {
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+.collapsible-header.open .chevron { transform: rotate(180deg); }
+.collapsible-body {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+.collapsible-body.open {
+  max-height: 500px;
+  opacity: 1;
+}
+.collapsible-body > *:first-child { margin-top: 14px; }

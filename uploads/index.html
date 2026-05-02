@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seddari — Moroccan Salon</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+
+  <aside id="panel">
+    <div class="neumorph-card">
+      <header>
+        <div class="logo">SEDDARI</div>
+        <p class="sub">Parametric Studio</p>
+      </header>
+
+      <section class="group">
+        <label>Back Length</label>
+        <div class="slider-track">
+          <input type="range" id="backLength" min="2.0" max="6.0" step="0.05" value="4.5" />
+        </div>
+      </section>
+
+      <section class="group">
+        <label>Side Depth</label>
+        <div class="slider-track">
+          <input type="range" id="leftDepth" min="0.7" max="4.0" step="0.05" value="3.0" />
+        </div>
+      </section>
+
+      <div class="btn-row">
+        <button id="modeDiagram" class="neu-btn">Diagram</button>
+        <button id="modeReal" class="neu-btn active">Realistic</button>
+      </div>
+    </div>
+  </aside>
+
+  <script type="module" src="./main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+:root {
+  --neu-bg: #e0e0e0;
+  --neu-light: #ffffff;
+  --neu-shadow: #bebebe;
+  --neu-text: #444;
+  --neu-accent: #222;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--neu-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--neu-text);
+}
+
+/* ── Canvas ── */
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 1;
+}
+
+/* ── Panel ── */
+#panel {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  width: 280px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.neumorph-card {
+  padding: 24px;
+  background: var(--neu-bg);
+  border-radius: 30px;
+  box-shadow: 10px 10px 20px var(--neu-shadow), 
+              -10px -10px 20px var(--neu-light);
+  pointer-events: auto;
+}
+
+header { margin-bottom: 24px; }
+.logo { font-weight: 800; font-size: 18px; letter-spacing: 2px; color: var(--neu-accent); }
+.sub { font-size: 11px; opacity: 0.6; text-transform: uppercase; margin-top: 4px; }
+
+.group { margin-bottom: 20px; }
+.group label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 8px; opacity: 0.7; }
+
+/* ── Sliders (Inset Track) ── */
+.slider-track {
+  height: 12px;
+  background: var(--neu-bg);
+  border-radius: 10px;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow), 
+              inset -3px -3px 6px var(--neu-light);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+input[type="range"] {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  background: var(--neu-bg);
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px var(--neu-shadow), 
+              -2px -2px 5px var(--neu-light);
+  border: 2px solid var(--neu-bg);
+}
+
+/* ── Buttons (Tactile) ── */
+.btn-row { display: flex; gap: 12px; margin-top: 24px; }
+.neu-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: var(--neu-bg);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neu-text);
+  box-shadow: 5px 5px 10px var(--neu-shadow), 
+              -5px -5px 10px var(--neu-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.neu-btn.active {
+  box-shadow: inset 4px 4px 8px var(--neu-shadow), 
+              inset -4px -4px 8px var(--neu-light);
+  color: var(--neu-accent);
+}
+
+.neu-btn:active {
+  transform: scale(0.98);
+}
