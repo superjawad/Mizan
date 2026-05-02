@@ -187,6 +187,10 @@ function bindSlider(id, stateKey, valId, unit = ' m', decimals = 2) {
   const el  = document.getElementById(id);
   const val = document.getElementById(valId);
   if (!el) return;
+
+  el.value = state[stateKey];
+  if (val) val.textContent = parseFloat(state[stateKey]).toFixed(decimals) + unit;
+
   el.addEventListener('input', () => {
     state[stateKey] = parseFloat(el.value);
     if (val) val.textContent = parseFloat(el.value).toFixed(decimals) + unit;
@@ -272,6 +276,9 @@ if (btnMidaOn && btnMidaOff) {
 function bindColor(id, stateKey) {
   const el = document.getElementById(id);
   if (!el) return;
+
+  el.value = state[stateKey];
+
   el.addEventListener('input', () => {
     state[stateKey] = el.value;
     rebuildSalon();
