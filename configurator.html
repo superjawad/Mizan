@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mizan — Moroccan Salon Studio</title>
+  <title>Mizan — Parametric Studio</title>
   <link rel="stylesheet" href="./style.css" />
   <script type="importmap">
   {
@@ -24,7 +24,7 @@
       <div class="logo-block" style="justify-content: space-between; width: 100%;">
         <div>
           <div class="logo">MIZAN</div>
-          <div class="logo-sub">Salon sur mesure — ميزان</div>
+          <div class="logo-sub" id="productSubLabel">Salon sur mesure — ميزان</div>
         </div>
         <a href="index.html" style="display:flex; align-items:center; gap:5px; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); text-decoration:none; opacity:0.7; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
           ← Home
@@ -32,100 +32,178 @@
       </div>
     </div>
 
-    <!-- ── Layout ── -->
+    <!-- ── Product Switcher ── -->
     <div class="card">
-      <div class="section-label">Layout</div>
-      <div class="layout-grid">
-
-        <button class="layout-btn active" data-layout="U">
+      <div class="section-label">Product</div>
+      <div class="product-grid">
+        <button class="product-btn active" data-product="salon">
           <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
             <rect x="2"  y="2"  width="4" height="24" rx="1.5" fill="currentColor"/>
             <rect x="30" y="2"  width="4" height="24" rx="1.5" fill="currentColor"/>
             <rect x="2"  y="22" width="32" height="4"  rx="1.5" fill="currentColor"/>
           </svg>
-          U-Shape
+          Seddari
         </button>
-
-        <button class="layout-btn" data-layout="L">
+        <button class="product-btn" data-product="closet">
           <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
-            <rect x="2"  y="2"  width="4" height="24" rx="1.5" fill="currentColor"/>
-            <rect x="2"  y="22" width="28" height="4"  rx="1.5" fill="currentColor"/>
+            <rect x="3"  y="2"  width="30" height="24" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"/>
+            <line x1="13" y1="3" x2="13" y2="25" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="23" y1="3" x2="23" y2="25" stroke="currentColor" stroke-width="1.5"/>
           </svg>
-          L-Shape
+          Closet
         </button>
-
-        <button class="layout-btn" data-layout="I">
-          <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
-            <rect x="2" y="12" width="32" height="4" rx="1.5" fill="currentColor"/>
-          </svg>
-          Straight
-        </button>
-
       </div>
     </div>
 
-    <!-- ── Dimensions ── -->
-    <div class="card">
-      <div class="section-label">Dimensions</div>
+    <!-- ════════════ SALON PANEL ════════════ -->
+    <div id="salonPanel">
 
-      <div class="slider-row">
-        <div class="slider-header">
-          <span class="slider-label">Back Length</span>
-          <span class="slider-value" id="backLengthVal">4.50 m</span>
-        </div>
-        <div class="slider-track">
-          <input type="range" id="backLength" min="2.0" max="6.0" step="0.05" value="4.5" />
+      <!-- Layout -->
+      <div class="card">
+        <div class="section-label">Layout</div>
+        <div class="layout-grid">
+          <button class="layout-btn active" data-layout="U">
+            <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
+              <rect x="2"  y="2"  width="4" height="24" rx="1.5" fill="currentColor"/>
+              <rect x="30" y="2"  width="4" height="24" rx="1.5" fill="currentColor"/>
+              <rect x="2"  y="22" width="32" height="4"  rx="1.5" fill="currentColor"/>
+            </svg>
+            U-Shape
+          </button>
+          <button class="layout-btn" data-layout="L">
+            <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
+              <rect x="2"  y="2"  width="4" height="24" rx="1.5" fill="currentColor"/>
+              <rect x="2"  y="22" width="28" height="4"  rx="1.5" fill="currentColor"/>
+            </svg>
+            L-Shape
+          </button>
+          <button class="layout-btn" data-layout="I">
+            <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
+              <rect x="2" y="12" width="32" height="4" rx="1.5" fill="currentColor"/>
+            </svg>
+            Straight
+          </button>
         </div>
       </div>
 
-      <div class="slider-row" id="leftDepthRow">
-        <div class="slider-header">
-          <span class="slider-label" id="leftDepthLabel">Left Depth</span>
-          <span class="slider-value" id="leftDepthVal">3.00 m</span>
+      <!-- Salon Dimensions -->
+      <div class="card">
+        <div class="section-label">Dimensions</div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Back Length</span>
+            <span class="slider-value" id="backLengthVal">4.50 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="backLength" min="2.0" max="6.0" step="0.05" value="4.5" />
+          </div>
         </div>
-        <div class="slider-track">
-          <input type="range" id="leftDepth" min="0.7" max="4.0" step="0.05" value="3.0" />
+        <div class="slider-row" id="leftDepthRow">
+          <div class="slider-header">
+            <span class="slider-label" id="leftDepthLabel">Left Depth</span>
+            <span class="slider-value" id="leftDepthVal">3.00 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="leftDepth" min="0.7" max="4.0" step="0.05" value="3.0" />
+          </div>
         </div>
-      </div>
-
-      <div class="slider-row" id="rightDepthRow">
-        <div class="slider-header">
-          <span class="slider-label">Right Depth</span>
-          <span class="slider-value" id="rightDepthVal">3.00 m</span>
-        </div>
-        <div class="slider-track">
-          <input type="range" id="rightDepth" min="0.7" max="4.0" step="0.05" value="3.0" />
+        <div class="slider-row" id="rightDepthRow">
+          <div class="slider-header">
+            <span class="slider-label">Right Depth</span>
+            <span class="slider-value" id="rightDepthVal">3.00 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="rightDepth" min="0.7" max="4.0" step="0.05" value="3.0" />
+          </div>
         </div>
       </div>
 
     </div>
 
-    <!-- ── Materials ── -->
+    <!-- ════════════ CLOSET PANEL ════════════ -->
+    <div id="closetPanel" style="display:none">
+
+      <div class="card">
+        <div class="section-label">Dimensions</div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Width</span>
+            <span class="slider-value" id="closetWidthVal">2.60 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="closetWidth" min="1.5" max="4.0" step="0.05" value="2.6" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Height</span>
+            <span class="slider-value" id="closetHeightVal">2.20 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="closetHeight" min="1.8" max="2.6" step="0.05" value="2.2" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Depth</span>
+            <span class="slider-value" id="closetDepthVal">0.60 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="closetDepth" min="0.40" max="0.75" step="0.01" value="0.60" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Columns</span>
+            <span class="slider-value" id="closetColCountVal">4</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="closetColCount" min="2" max="6" step="1" value="4" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Column Layout</div>
+        <div id="columnEditors"></div>
+      </div>
+
+    </div>
+
+    <!-- ════════════ MATERIALS ════════════ -->
     <div class="card">
       <div class="section-label">Materials</div>
-      <div class="color-grid">
+      <div id="salonColors" class="color-grid">
         <div class="color-item">
-          <div class="swatch-wrap">
-            <input type="color" id="colorUpholstery" value="#9e2a3a" />
-          </div>
+          <div class="swatch-wrap"><input type="color" id="colorUpholstery" value="#9e2a3a" /></div>
           <label>Fabric</label>
         </div>
         <div class="color-item">
-          <div class="swatch-wrap">
-            <input type="color" id="colorWood" value="#5c3d1e" />
-          </div>
+          <div class="swatch-wrap"><input type="color" id="colorWood" value="#5c3d1e" /></div>
           <label>Wood</label>
         </div>
         <div class="color-item">
-          <div class="swatch-wrap">
-            <input type="color" id="colorAccent" value="#c8892e" />
-          </div>
+          <div class="swatch-wrap"><input type="color" id="colorAccent" value="#c8892e" /></div>
           <label>Accent</label>
+        </div>
+      </div>
+      <div id="closetColors" class="color-grid" style="display:none">
+        <div class="color-item">
+          <div class="swatch-wrap"><input type="color" id="colorCase" value="#8a6a44" /></div>
+          <label>Case</label>
+        </div>
+        <div class="color-item">
+          <div class="swatch-wrap"><input type="color" id="colorDrawer" value="#d9c9a8" /></div>
+          <label>Drawer</label>
+        </div>
+        <div class="color-item">
+          <div class="swatch-wrap"><input type="color" id="colorInterior" value="#bfb6a8" /></div>
+          <label>Interior</label>
         </div>
       </div>
     </div>
 
-    <!-- ── View ── -->
+    <!-- ── View Mode ── -->
     <div class="card">
       <div class="section-label">View Mode</div>
       <div class="toggle-row">
@@ -141,9 +219,7 @@
         <span class="chevron">▼</span>
       </div>
       <div class="collapsible-body open" id="bomBody">
-        <div class="bom-grid" id="bomGrid">
-          <!-- populated by JS -->
-        </div>
+        <div class="bom-grid" id="bomGrid"></div>
       </div>
     </div>
 
