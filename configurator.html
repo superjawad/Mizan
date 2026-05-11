@@ -16,6 +16,17 @@
 </head>
 <body>
   <canvas id="scene"></canvas>
+  <div id="ceilingView" style="display:none; position:fixed; inset:0; background:#f3efe7; padding:40px; overflow:auto;">
+    <div id="ceilingSvgWrap" style="max-width:1100px; margin:0 auto; background:#fff; padding:24px; box-shadow:0 4px 18px rgba(0,0,0,0.06);">
+      <div id="ceilingTitle" style="font-family:'DM Mono', monospace; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#c8922a; margin-bottom:8px;">Reflected Ceiling Plan — IN-AR07</div>
+      <div id="ceilingSvg"></div>
+      <div style="margin-top:12px; font-family:'DM Mono', monospace; font-size:10px; color:#666; display:flex; justify-content:space-between;">
+        <span>SPACE: <strong style="color:#222;">Custom Room</strong></span>
+        <span>UNITS: m · 1:50</span>
+        <span>DRAWING: IN-AR07</span>
+      </div>
+    </div>
+  </div>
 
   <aside id="panel">
 
@@ -60,6 +71,15 @@
             <circle cx="14" cy="20" r="1.5" fill="currentColor"/>
           </svg>
           Kitchen
+        </button>
+        <button class="product-btn" data-product="ceiling">
+          <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
+            <rect x="3"  y="3"  width="30" height="22" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <rect x="7"  y="7"  width="22" height="14" rx="0.5" stroke="currentColor" stroke-width="1" fill="none"/>
+            <rect x="11" y="10" width="14" height="8"  rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="18" cy="14" r="1.5" fill="currentColor"/>
+          </svg>
+          Ceiling
         </button>
       </div>
     </div>
@@ -425,6 +445,191 @@
       </div>
 
     </div><!-- /kitchenPanel -->
+
+    <!-- ════════════ CEILING PANEL ════════════ -->
+    <div id="ceilingPanel" style="display:none">
+
+      <div class="card">
+        <div class="section-label">Room Boundary</div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Room Width</span>
+            <span class="slider-value" id="ceilWidthVal">4.36 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilWidth" min="2.5" max="8.0" step="0.05" value="4.36" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Room Length</span>
+            <span class="slider-value" id="ceilLengthVal">5.50 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilLength" min="2.5" max="9.0" step="0.05" value="5.50" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Wall Thickness</span>
+            <span class="slider-value" id="ceilWallVal">0.20 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilWall" min="0.10" max="0.40" step="0.01" value="0.20" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Tray Layers</div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Layer Count</span>
+            <span class="slider-value" id="ceilLayerCountVal">3</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilLayerCount" min="1" max="4" step="1" value="3" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Layer 1 Offset</span>
+            <span class="slider-value" id="ceilOffset1Val">0.30 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilOffset1" min="0.10" max="0.80" step="0.01" value="0.30" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Layer 2 Offset</span>
+            <span class="slider-value" id="ceilOffset2Val">0.40 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilOffset2" min="0.10" max="0.80" step="0.01" value="0.40" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Layer 3 Offset</span>
+            <span class="slider-value" id="ceilOffset3Val">0.55 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilOffset3" min="0.10" max="0.80" step="0.01" value="0.55" />
+          </div>
+        </div>
+        <div class="slider-row" id="ceilOffset4Row">
+          <div class="slider-header">
+            <span class="slider-label">Layer 4 Offset</span>
+            <span class="slider-value" id="ceilOffset4Val">0.30 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilOffset4" min="0.10" max="0.80" step="0.01" value="0.30" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">LED Pockets</div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="ceilLedEnabled" checked /> Show LED pockets
+          </label>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Inset from Tray</span>
+            <span class="slider-value" id="ceilLedInsetVal">0.40 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilLedInset" min="0.10" max="1.50" step="0.01" value="0.40" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Pocket Width</span>
+            <span class="slider-value" id="ceilLedWidthVal">0.20 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilLedWidth" min="0.05" max="0.40" step="0.01" value="0.20" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Pocket Length</span>
+            <span class="slider-value" id="ceilLedRunVal">0.55</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilLedRun" min="0.20" max="0.85" step="0.01" value="0.55" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Centre Medallion</div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="ceilMedEnabled" checked /> Show chandelier
+          </label>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Arms</span>
+            <span class="slider-value" id="ceilMedArmsVal">8</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilMedArms" min="4" max="12" step="1" value="8" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Radius</span>
+            <span class="slider-value" id="ceilMedRadiusVal">0.55 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilMedRadius" min="0.20" max="1.20" step="0.01" value="0.55" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Lighting</div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="ceilDlEnabled" checked /> Recessed downlights
+          </label>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Per long side</span>
+            <span class="slider-value" id="ceilDlPerSideVal">3</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilDlPerSide" min="0" max="8" step="1" value="3" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Per short side</span>
+            <span class="slider-value" id="ceilDlPerEndVal">2</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="ceilDlPerEnd" min="0" max="6" step="1" value="2" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="ceilScEnabled" checked /> Wall sconces
+          </label>
+        </div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="ceilAnnotEnabled" checked /> Show dimensions
+          </label>
+        </div>
+      </div>
+
+    </div><!-- /ceilingPanel -->
 
     <!-- ── BOM ── -->
     <div class="card">

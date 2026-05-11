@@ -224,9 +224,9 @@
     }
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 3px;
-      max-width: 1380px;
+      max-width: 1280px;
       margin: 0 auto;
     }
     .product-card {
@@ -610,6 +610,61 @@
         <a class="product-cta" href="configurator.html?product=kitchen">Configure kitchen <span class="arr">→</span></a>
       </article>
 
+      <!-- PRODUCT 4: CEILING -->
+      <article class="product-card fade-up d4">
+        <div class="product-diagram" aria-hidden="true">
+          <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet">
+            <!-- outer wall band (hatched indication) -->
+            <rect x="30" y="20" width="260" height="160" class="stroke-dim" />
+            <rect x="42" y="32" width="236" height="136" class="stroke-soft" />
+            <!-- tray layers -->
+            <rect x="62" y="48" width="196" height="104" class="stroke-soft" />
+            <rect x="78" y="60" width="164" height="80"  class="fill-soft" />
+            <!-- LED pockets -->
+            <rect x="88" y="76" width="6" height="48" fill="rgba(200,146,42,0.4)" stroke="rgba(200,146,42,0.8)" stroke-width="0.6" />
+            <rect x="226" y="76" width="6" height="48" fill="rgba(200,146,42,0.4)" stroke="rgba(200,146,42,0.8)" stroke-width="0.6" />
+            <!-- central medallion -->
+            <g transform="translate(160 100)">
+              <circle r="18" class="stroke-soft" stroke-dasharray="2 2" />
+              <g class="stroke">
+                <line x1="0" y1="0" x2="0" y2="-18" />
+                <line x1="0" y1="0" x2="12.7" y2="-12.7" />
+                <line x1="0" y1="0" x2="18" y2="0" />
+                <line x1="0" y1="0" x2="12.7" y2="12.7" />
+                <line x1="0" y1="0" x2="0" y2="18" />
+                <line x1="0" y1="0" x2="-12.7" y2="12.7" />
+                <line x1="0" y1="0" x2="-18" y2="0" />
+                <line x1="0" y1="0" x2="-12.7" y2="-12.7" />
+              </g>
+              <circle r="3" class="stroke" />
+            </g>
+            <!-- downlights along inner tray -->
+            <g class="stroke">
+              <rect x="115" y="44" width="4" height="4" />
+              <rect x="158" y="44" width="4" height="4" />
+              <rect x="201" y="44" width="4" height="4" />
+              <rect x="115" y="152" width="4" height="4" />
+              <rect x="158" y="152" width="4" height="4" />
+              <rect x="201" y="152" width="4" height="4" />
+            </g>
+            <!-- dimension marks -->
+            <g class="stroke-dim">
+              <line x1="42" y1="14" x2="278" y2="14" />
+              <line x1="20" y1="32" x2="20" y2="168" />
+            </g>
+            <text x="115" y="14">CEILING · RCP</text>
+            <text x="142" y="170">DIMENSIONED PLAN</text>
+          </svg>
+        </div>
+        <div class="product-meta">
+          <span class="product-n">04 · CEILING</span>
+          <span class="product-ar">سقف مستعار</span>
+        </div>
+        <h3 class="product-title">The <em>sur mesure</em> ceiling</h3>
+        <p class="product-body">A reflected ceiling plan generator — define a room boundary and dial in stepped tray layers, recessed LED pockets, a central medallion and a perimeter of downlights, dimensioned and ready for the contractor.</p>
+        <a class="product-cta" href="configurator.html?product=ceiling">Configure ceiling <span class="arr">→</span></a>
+      </article>
+
     </div>
   </section>
 
@@ -669,6 +724,7 @@
         <li><a href="configurator.html?product=salon">Salon</a></li>
         <li><a href="configurator.html?product=closet">Closet</a></li>
         <li><a href="configurator.html?product=kitchen">Kitchen</a></li>
+        <li><a href="configurator.html?product=ceiling">Ceiling Plan</a></li>
       </ul>
     </div>
     <div>

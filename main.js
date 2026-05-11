@@ -8,6 +8,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { MoroccanSalonGenerator, CONFIG }           from './MoroccanSalonGenerator.js';
 import { ParametricClosetGenerator, CLOSET_CONFIG } from './ParametricClosetGenerator.js';
 import { KitchenGenerator, KITCHEN_CONFIG }         from './KitchenGenerator.js';
+import { CeilingPlanGenerator, CEILING_CONFIG }     from './CeilingPlanGenerator.js';
 
 
 // ── App state ────────────────────────────────────────────────────────────────
@@ -16,6 +17,7 @@ const productParam = params.get('product');
 const initialProduct =
   productParam === 'closet'  ? 'closet'  :
   productParam === 'kitchen' ? 'kitchen' :
+  productParam === 'ceiling' ? 'ceiling' :
   'salon';
 
 const state = {
@@ -71,6 +73,28 @@ const state = {
   colorCounter:        '#e6e0d2',
   colorAppliance:      '#141414',
   colorPlinth:         '#141414',
+
+  // Ceiling
+  ceilWidth:       4.36,
+  ceilLength:      5.50,
+  ceilWall:        0.20,
+  ceilLayerCount:  3,
+  ceilOffset1:     0.30,
+  ceilOffset2:     0.40,
+  ceilOffset3:     0.55,
+  ceilOffset4:     0.30,
+  ceilLedEnabled:  true,
+  ceilLedInset:    0.40,
+  ceilLedWidth:    0.20,
+  ceilLedRun:      0.55,
+  ceilMedEnabled:  true,
+  ceilMedArms:     8,
+  ceilMedRadius:   0.55,
+  ceilDlEnabled:   true,
+  ceilDlPerSide:   3,
+  ceilDlPerEnd:    2,
+  ceilScEnabled:   true,
+  ceilAnnotEnabled: true,
 };
 
 
@@ -129,26 +153,81 @@ function rebuild() {
     currentGroup = null;
   }
 
+  const canvasEl = document.getElementById('scene');
+  const ceilingViewEl = document.getElementById('ceilingView');
+
   try {
-    if (state.product === 'salon') {
-      currentGroup = buildSalon();
-      controls.target.set(0, 0.5, 0);
-      camera.position.set(6, 5, 7);
-    } else if (state.product === 'closet') {
-      currentGroup = buildCloset();
-      controls.target.set(0, 1.1, 0);
-      camera.position.set(0, 1.6, 4.2);
+    if (state.product === 'ceiling') {
+      // Hide 3D canvas, show SVG ceiling view
+      if (canvasEl) canvasEl.style.display = 'none';
+      if (ceilingViewEl) ceilingViewEl.style.display = '';
+      renderCeilingPlan();
     } else {
-      currentGroup = buildKitchen();
-      controls.target.set(0, 1.2, 0);
-      camera.position.set(0, 1.7, 4.8);
+      if (canvasEl) canvasEl.style.display = '';
+      if (ceilingViewEl) ceilingViewEl.style.display = 'none';
+
+      if (state.product === 'salon') {
+        currentGroup = buildSalon();
+        controls.target.set(0, 0.5, 0);
+        camera.position.set(6, 5, 7);
+      } else if (state.product === 'closet') {
+        currentGroup = buildCloset();
+        controls.target.set(0, 1.1, 0);
+        camera.position.set(0, 1.6, 4.2);
+      } else {
+        currentGroup = buildKitchen();
+        controls.target.set(0, 1.2, 0);
+        camera.position.set(0, 1.7, 4.8);
+      }
+      if (currentGroup) scene.add(currentGroup);
     }
-    if (currentGroup) scene.add(currentGroup);
   } catch (err) {
     console.error(err);
   }
 
   updateBOM();
+}
+
+function renderCeilingPlan() {
+  const layers = [
+    { offset: state.ceilOffset1, label: state.ceilOffset1.toFixed(2) },
+    { offset: state.ceilOffset2, label: state.ceilOffset2.toFixed(2) },
+    { offset: state.ceilOffset3, label: state.ceilOffset3.toFixed(2) },
+    { offset: state.ceilOffset4, label: state.ceilOffset4.toFixed(2) },
+  ].slice(0, state.ceilLayerCount);
+
+  const generator = new CeilingPlanGenerator(CEILING_CONFIG);
+  const svgString = generator.generate({
+    roomWidth:     state.ceilWidth,
+    roomLength:    state.ceilLength,
+    wallThickness: state.ceilWall,
+    layers,
+    ledPockets: {
+      enabled:  state.ceilLedEnabled,
+      insetX:   state.ceilLedInset,
+      insetY:   state.ceilLedInset,
+      width:    state.ceilLedWidth,
+      runRatio: state.ceilLedRun,
+    },
+    medallion: {
+      enabled: state.ceilMedEnabled,
+      arms:    state.ceilMedArms,
+      radius:  state.ceilMedRadius,
+    },
+    downlights: {
+      enabled: state.ceilDlEnabled,
+      perSide: state.ceilDlPerSide,
+      perEnd:  state.ceilDlPerEnd,
+    },
+    sconces: {
+      enabled: state.ceilScEnabled,
+    },
+    annotations: {
+      enabled: state.ceilAnnotEnabled,
+    },
+  });
+  const container = document.getElementById('ceilingSvg');
+  if (container) container.innerHTML = svgString;
 }
 
 function buildSalon() {
@@ -314,6 +393,24 @@ function updateBOM() {
       <span class="bom-key">Mzaoud bolsters</span><span class="bom-val">${b.bolsterCount}</span>
       <span class="bom-key">Mida tables</span><span class="bom-val">${b.midaCount}</span>
     `;
+  } else if (state.product === 'ceiling') {
+    const W = state.ceilWidth;
+    const L = state.ceilLength;
+    const T = state.ceilWall;
+    const layers = state.ceilLayerCount;
+    const dl = state.ceilDlEnabled ? state.ceilDlPerSide * 2 + state.ceilDlPerEnd * 2 : 0;
+    const ledLen = state.ceilLedEnabled ? (L * state.ceilLedRun * 2) : 0;
+    grid.innerHTML = `
+      <span class="bom-key">Room Width</span><span class="bom-val">${W.toFixed(2)} m</span>
+      <span class="bom-key">Room Length</span><span class="bom-val">${L.toFixed(2)} m</span>
+      <span class="bom-key">Wall thickness</span><span class="bom-val">${T.toFixed(2)} m</span>
+      <span class="bom-key">Floor area</span><span class="bom-val">${(W * L).toFixed(2)} m²</span>
+      <div class="bom-divider"></div><div class="bom-divider"></div>
+      <span class="bom-key">Tray layers</span><span class="bom-val">${layers}</span>
+      <span class="bom-key">Downlights</span><span class="bom-val">${dl}</span>
+      <span class="bom-key">LED strip</span><span class="bom-val">${ledLen.toFixed(2)} m</span>
+      <span class="bom-key">Medallion</span><span class="bom-val">${state.ceilMedEnabled ? state.ceilMedArms + ' arms' : '—'}</span>
+    `;
   } else if (state.product === 'closet') {
     const b = computeClosetBOM();
     grid.innerHTML = `
@@ -360,19 +457,21 @@ function applyProductUI() {
     b.classList.toggle('active', b.dataset.product === state.product);
   });
   const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? '' : 'none'; };
-  show('salonPanel',   state.product === 'salon');
-  show('closetPanel',  state.product === 'closet');
-  show('kitchenPanel', state.product === 'kitchen');
-  show('salonColors',  state.product === 'salon');
-  show('closetColors', state.product === 'closet');
+  show('salonPanel',    state.product === 'salon');
+  show('closetPanel',   state.product === 'closet');
+  show('kitchenPanel',  state.product === 'kitchen');
+  show('ceilingPanel',  state.product === 'ceiling');
+  show('salonColors',   state.product === 'salon');
+  show('closetColors',  state.product === 'closet');
   show('kitchenColors', state.product === 'kitchen');
 
   const subLabel = document.getElementById('productSubLabel');
   if (subLabel) {
     subLabel.textContent =
-      state.product === 'salon'  ? 'Salon sur mesure — ميزان' :
-      state.product === 'closet' ? 'Closet sur mesure — خزانة' :
-                                   'Kitchen sur mesure — مطبخ';
+      state.product === 'salon'   ? 'Salon sur mesure — ميزان' :
+      state.product === 'closet'  ? 'Closet sur mesure — خزانة' :
+      state.product === 'kitchen' ? 'Kitchen sur mesure — مطبخ' :
+                                    'False ceiling plan — سقف مستعار';
   }
 }
 
@@ -436,6 +535,52 @@ function bindToggle(id, stateKey) {
 bindToggle('kitchenShowHood', 'kitchenShowHood');
 bindToggle('kitchenShowOven', 'kitchenShowOven');
 bindToggle('kitchenShowMW',   'kitchenShowMW');
+
+// Ceiling sliders
+bindSlider('ceilWidth',      'ceilWidth',      'ceilWidthVal');
+bindSlider('ceilLength',     'ceilLength',     'ceilLengthVal');
+bindSlider('ceilWall',       'ceilWall',       'ceilWallVal');
+bindSlider('ceilOffset1',    'ceilOffset1',    'ceilOffset1Val');
+bindSlider('ceilOffset2',    'ceilOffset2',    'ceilOffset2Val');
+bindSlider('ceilOffset3',    'ceilOffset3',    'ceilOffset3Val');
+bindSlider('ceilOffset4',    'ceilOffset4',    'ceilOffset4Val');
+bindSlider('ceilLedInset',   'ceilLedInset',   'ceilLedInsetVal');
+bindSlider('ceilLedWidth',   'ceilLedWidth',   'ceilLedWidthVal');
+bindSlider('ceilLedRun',     'ceilLedRun',     'ceilLedRunVal', '', 2);
+bindSlider('ceilMedRadius',  'ceilMedRadius',  'ceilMedRadiusVal');
+
+function bindIntSlider(id, stateKey, valId) {
+  const el = document.getElementById(id);
+  const val = document.getElementById(valId);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    state[stateKey] = parseInt(el.value, 10);
+    if (val) val.textContent = el.value;
+    if (id === 'ceilLayerCount') updateCeilLayerVisibility();
+    rebuild();
+  });
+}
+bindIntSlider('ceilLayerCount', 'ceilLayerCount', 'ceilLayerCountVal');
+bindIntSlider('ceilMedArms',    'ceilMedArms',    'ceilMedArmsVal');
+bindIntSlider('ceilDlPerSide',  'ceilDlPerSide',  'ceilDlPerSideVal');
+bindIntSlider('ceilDlPerEnd',   'ceilDlPerEnd',   'ceilDlPerEndVal');
+
+bindToggle('ceilLedEnabled',   'ceilLedEnabled');
+bindToggle('ceilMedEnabled',   'ceilMedEnabled');
+bindToggle('ceilDlEnabled',    'ceilDlEnabled');
+bindToggle('ceilScEnabled',    'ceilScEnabled');
+bindToggle('ceilAnnotEnabled', 'ceilAnnotEnabled');
+
+function updateCeilLayerVisibility() {
+  const row4 = document.getElementById('ceilOffset4Row');
+  if (row4) row4.style.display = state.ceilLayerCount >= 4 ? '' : 'none';
+  // Hide layer 2 and 3 rows if not needed
+  const id = n => document.getElementById(`ceilOffset${n}`)?.closest('.slider-row');
+  [2, 3].forEach(n => {
+    const r = id(n);
+    if (r) r.style.display = state.ceilLayerCount >= n ? '' : 'none';
+  });
+}
 
 const colCountEl  = document.getElementById('closetColCount');
 const colCountVal = document.getElementById('closetColCountVal');
@@ -581,4 +726,5 @@ onResize();
 applyProductUI();
 updateLayoutUI();
 renderColumnEditors();
+updateCeilLayerVisibility();
 rebuild();
