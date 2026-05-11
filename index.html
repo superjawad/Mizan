@@ -224,9 +224,9 @@
     }
     .products-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 3px;
-      max-width: 1280px;
+      max-width: 1380px;
       margin: 0 auto;
     }
     .product-card {
@@ -387,6 +387,9 @@
     .foot-copy { font-size: 11px; color: rgba(245,240,232,0.18); letter-spacing: 0.5px; }
     .foot-tagline { font-family: var(--arabic); font-size: 13px; color: rgba(200,146,42,0.3); direction: rtl; }
 
+    @media (max-width: 1100px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 900px) {
       #nav { padding: 20px 24px; }
       .nav-links { display: none; }
@@ -544,6 +547,69 @@
         <a class="product-cta" href="configurator.html?product=closet">Configure closet <span class="arr">→</span></a>
       </article>
 
+      <!-- PRODUCT 3: KITCHEN -->
+      <article class="product-card fade-up d3">
+        <div class="product-diagram" aria-hidden="true">
+          <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid meet">
+            <!-- floor + ceiling reference -->
+            <line x1="20" y1="180" x2="300" y2="180" class="stroke-dim" />
+            <line x1="20" y1="20" x2="300" y2="20" class="stroke-dim" />
+            <!-- upper cabinets (over sink + cooktop zones) -->
+            <rect x="40" y="30" width="170" height="40" class="fill-soft" />
+            <line x1="80"  y1="30" x2="80"  y2="70" class="stroke-soft" />
+            <line x1="135" y1="30" x2="135" y2="70" class="stroke-soft" />
+            <line x1="175" y1="30" x2="175" y2="70" class="stroke-soft" />
+            <!-- range hood under upper cabs, centered over cooktop -->
+            <rect x="115" y="70" width="55" height="10" class="stroke" />
+            <!-- backsplash band -->
+            <line x1="40" y1="95" x2="210" y2="95" class="stroke-dim" />
+            <!-- counter line -->
+            <line x1="40" y1="120" x2="210" y2="120" class="stroke" />
+            <!-- sink cutout -->
+            <rect x="55" y="113" width="40" height="7" class="stroke" />
+            <!-- cooktop with 4 burners -->
+            <rect x="130" y="113" width="60" height="7" class="stroke" />
+            <circle cx="143" cy="117" r="2.5" class="stroke-soft" />
+            <circle cx="160" cy="117" r="2.5" class="stroke-soft" />
+            <circle cx="177" cy="117" r="2.5" class="stroke-soft" />
+            <circle cx="190" cy="117" r="2.5" class="stroke-soft" fill="rgba(200,146,42,0.15)" />
+            <!-- base cabinets -->
+            <rect x="40" y="120" width="170" height="45" class="fill-soft" />
+            <line x1="105" y1="120" x2="105" y2="165" class="stroke-soft" />
+            <line x1="155" y1="120" x2="155" y2="165" class="stroke-soft" />
+            <line x1="40" y1="135" x2="105" y2="135" class="stroke-soft" />
+            <line x1="105" y1="135" x2="155" y2="135" class="stroke-soft" />
+            <line x1="105" y1="150" x2="155" y2="150" class="stroke-soft" />
+            <!-- plinth -->
+            <line x1="40" y1="170" x2="210" y2="170" class="stroke-soft" />
+            <!-- tall column (right) -->
+            <rect x="220" y="30" width="60" height="140" class="fill-soft" />
+            <!-- top cabinet -->
+            <line x1="220" y1="55" x2="280" y2="55" class="stroke-soft" />
+            <!-- microwave -->
+            <rect x="226" y="62" width="48" height="22" class="stroke" />
+            <!-- oven -->
+            <rect x="226" y="92" width="48" height="32" class="stroke" />
+            <!-- bottom drawer -->
+            <line x1="220" y1="135" x2="280" y2="135" class="stroke-soft" />
+            <!-- column plinth -->
+            <line x1="220" y1="170" x2="280" y2="170" class="stroke-soft" />
+            <!-- labels -->
+            <text x="125" y="14">KITCHEN · ELEVATION</text>
+            <text x="60" y="138">A · SINK</text>
+            <text x="120" y="138">B · COOKTOP</text>
+            <text x="230" y="178">C · COLUMN</text>
+          </svg>
+        </div>
+        <div class="product-meta">
+          <span class="product-n">03 · KITCHEN</span>
+          <span class="product-ar">مطبخ</span>
+        </div>
+        <h3 class="product-title">The <em>sur mesure</em> kitchen</h3>
+        <p class="product-body">A single-wall built-in kitchen with sink, cooktop and a tall appliance column for oven and microwave — every zone, dimension and finish exposed as a live parameter.</p>
+        <a class="product-cta" href="configurator.html?product=kitchen">Configure kitchen <span class="arr">→</span></a>
+      </article>
+
     </div>
   </section>
 
@@ -602,6 +668,7 @@
       <ul class="foot-links">
         <li><a href="configurator.html?product=salon">Salon</a></li>
         <li><a href="configurator.html?product=closet">Closet</a></li>
+        <li><a href="configurator.html?product=kitchen">Kitchen</a></li>
       </ul>
     </div>
     <div>

@@ -52,6 +52,15 @@
           </svg>
           Closet
         </button>
+        <button class="product-btn" data-product="kitchen">
+          <svg width="36" height="28" viewBox="0 0 36 28" fill="none">
+            <rect x="3"  y="3"  width="22" height="9"  rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <rect x="3"  y="16" width="22" height="9"  rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <rect x="27" y="3"  width="6"  height="22" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="14" cy="20" r="1.5" fill="currentColor"/>
+          </svg>
+          Kitchen
+        </button>
       </div>
     </div>
 
@@ -286,6 +295,136 @@
       </div>
 
     </div><!-- /closetPanel -->
+
+    <!-- ════════════ KITCHEN PANEL ════════════ -->
+    <div id="kitchenPanel" style="display:none">
+
+      <div class="card">
+        <div class="section-label">Dimensions</div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Total Width</span>
+            <span class="slider-value" id="kitchenWidthVal">2.60 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenWidth" min="2.0" max="4.5" step="0.05" value="2.6" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Ceiling Height</span>
+            <span class="slider-value" id="kitchenHeightVal">2.50 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenHeight" min="2.20" max="3.00" step="0.05" value="2.50" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Counter Depth</span>
+            <span class="slider-value" id="kitchenDepthVal">0.60 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenDepth" min="0.50" max="0.75" step="0.01" value="0.60" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Counter Height</span>
+            <span class="slider-value" id="kitchenCounterHeightVal">0.90 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenCounterHeight" min="0.82" max="0.98" step="0.01" value="0.90" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Plinth Height</span>
+            <span class="slider-value" id="kitchenPlinthHeightVal">0.15 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenPlinthHeight" min="0.08" max="0.20" step="0.01" value="0.15" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Upper Cab Height</span>
+            <span class="slider-value" id="kitchenUpperHeightVal">0.76 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenUpperHeight" min="0.50" max="0.95" step="0.01" value="0.76" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Zones</div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Column Width</span>
+            <span class="slider-value" id="kitchenColumnWidthVal">0.60 m</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenColumnWidth" min="0.45" max="0.90" step="0.01" value="0.60" />
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-header">
+            <span class="slider-label">Sink / Cooktop Split</span>
+            <span class="slider-value" id="kitchenSinkRatioVal">0.45</span>
+          </div>
+          <div class="slider-track">
+            <input type="range" id="kitchenSinkRatio" min="0.25" max="0.75" step="0.01" value="0.45" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Appliances</div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="kitchenShowHood" checked /> Range hood
+          </label>
+        </div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="kitchenShowOven" checked /> Built-in oven
+          </label>
+        </div>
+        <div class="slider-row">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px;">
+            <input type="checkbox" id="kitchenShowMW" checked /> Built-in microwave
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Materials</div>
+        <div id="kitchenColors" class="color-grid">
+          <div class="color-item">
+            <div class="swatch-wrap"><input type="color" id="colorUpperCab" value="#3a3833" /></div>
+            <label>Upper Cab</label>
+          </div>
+          <div class="color-item">
+            <div class="swatch-wrap"><input type="color" id="colorBaseCab" value="#c7beb1" /></div>
+            <label>Base Cab</label>
+          </div>
+          <div class="color-item">
+            <div class="swatch-wrap"><input type="color" id="colorCounter" value="#e6e0d2" /></div>
+            <label>Counter</label>
+          </div>
+          <div class="color-item">
+            <div class="swatch-wrap"><input type="color" id="colorAppliance" value="#141414" /></div>
+            <label>Appliance</label>
+          </div>
+          <div class="color-item">
+            <div class="swatch-wrap"><input type="color" id="colorPlinth" value="#141414" /></div>
+            <label>Plinth</label>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /kitchenPanel -->
 
     <!-- ── BOM ── -->
     <div class="card">

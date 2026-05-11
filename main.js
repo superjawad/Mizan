@@ -7,11 +7,16 @@ import { OrbitControls }   from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { MoroccanSalonGenerator, CONFIG }           from './MoroccanSalonGenerator.js';
 import { ParametricClosetGenerator, CLOSET_CONFIG } from './ParametricClosetGenerator.js';
+import { KitchenGenerator, KITCHEN_CONFIG }         from './KitchenGenerator.js';
 
 
 // ── App state ────────────────────────────────────────────────────────────────
 const params = new URLSearchParams(location.search);
-const initialProduct = params.get('product') === 'closet' ? 'closet' : 'salon';
+const productParam = params.get('product');
+const initialProduct =
+  productParam === 'closet'  ? 'closet'  :
+  productParam === 'kitchen' ? 'kitchen' :
+  'salon';
 
 const state = {
   product:         initialProduct,
@@ -48,6 +53,24 @@ const state = {
   colorCase:     '#8a6a44',
   colorDrawer:   '#d9c9a8',
   colorInterior: '#bfb6a8',
+
+  // Kitchen
+  kitchenWidth:        2.60,
+  kitchenHeight:       2.50,
+  kitchenDepth:        0.60,
+  kitchenCounterHeight: 0.90,
+  kitchenPlinthHeight: 0.15,
+  kitchenUpperHeight:  0.76,
+  kitchenColumnWidth:  0.60,
+  kitchenSinkRatio:    0.45,
+  kitchenShowHood:     true,
+  kitchenShowOven:     true,
+  kitchenShowMW:       true,
+  colorUpperCab:       '#3a3833',
+  colorBaseCab:        '#c7beb1',
+  colorCounter:        '#e6e0d2',
+  colorAppliance:      '#141414',
+  colorPlinth:         '#141414',
 };
 
 
@@ -111,10 +134,14 @@ function rebuild() {
       currentGroup = buildSalon();
       controls.target.set(0, 0.5, 0);
       camera.position.set(6, 5, 7);
-    } else {
+    } else if (state.product === 'closet') {
       currentGroup = buildCloset();
       controls.target.set(0, 1.1, 0);
       camera.position.set(0, 1.6, 4.2);
+    } else {
+      currentGroup = buildKitchen();
+      controls.target.set(0, 1.2, 0);
+      camera.position.set(0, 1.7, 4.8);
     }
     if (currentGroup) scene.add(currentGroup);
   } catch (err) {
@@ -161,6 +188,32 @@ function buildCloset() {
     totalHeight: state.closetHeight,
     totalDepth:  state.closetDepth,
     columns:     state.closetColumns.slice(0, state.closetColCount),
+  });
+}
+
+function buildKitchen() {
+  const m = KITCHEN_CONFIG.materials;
+  m.diagrammatic    = false;
+  m.upperCabColor   = parseInt(state.colorUpperCab.replace('#', ''),  16);
+  m.baseCabColor    = parseInt(state.colorBaseCab.replace('#', ''),   16);
+  m.counterColor    = parseInt(state.colorCounter.replace('#', ''),   16);
+  m.backsplashColor = parseInt(state.colorCounter.replace('#', ''),   16);
+  m.applianceColor  = parseInt(state.colorAppliance.replace('#', ''), 16);
+  m.plinthColor     = parseInt(state.colorPlinth.replace('#', ''),    16);
+
+  const generator = new KitchenGenerator(KITCHEN_CONFIG, null);
+  return generator.generate({
+    totalWidth:    state.kitchenWidth,
+    totalHeight:   state.kitchenHeight,
+    counterDepth:  state.kitchenDepth,
+    counterHeight: state.kitchenCounterHeight,
+    plinthHeight:  state.kitchenPlinthHeight,
+    upperCabHeight: state.kitchenUpperHeight,
+    columnWidth:   state.kitchenColumnWidth,
+    sinkZoneRatio: state.kitchenSinkRatio,
+    showHood:      state.kitchenShowHood,
+    showOven:      state.kitchenShowOven,
+    showMicrowave: state.kitchenShowMW,
   });
 }
 
@@ -218,6 +271,33 @@ function computeClosetBOM() {
   };
 }
 
+function computeKitchenBOM() {
+  const W = state.kitchenWidth;
+  const H = state.kitchenHeight;
+  const D = state.kitchenDepth;
+  const columnW = state.kitchenColumnWidth;
+  const counterRun = Math.max(0.4, W - columnW);
+  const sinkW = counterRun * state.kitchenSinkRatio;
+  const cooktopW = counterRun - sinkW;
+  const upperH = state.kitchenUpperHeight;
+  const upperD = 0.35;
+
+  const counterArea   = (counterRun * (D + 0.02)).toFixed(2);
+  const backsplashArea = (counterRun * (H - state.kitchenCounterHeight - upperH - 0.24)).toFixed(2);
+  const baseCabCount  = 2;   // sink + cooktop
+  const upperCabCount = 3;   // 3 door panels in the upper run
+  const drawerCount   = 3;   // under cooktop
+  const applianceCount = (state.kitchenShowOven ? 1 : 0) + (state.kitchenShowMW ? 1 : 0) + 1; // + cooktop
+  const linearCab = counterRun.toFixed(2);
+
+  return {
+    width: W.toFixed(2), height: H.toFixed(2), depth: D.toFixed(2),
+    linearCab, counterArea, backsplashArea,
+    baseCabCount, upperCabCount, drawerCount, applianceCount,
+    sinkW: sinkW.toFixed(2), cooktopW: cooktopW.toFixed(2), columnW: columnW.toFixed(2),
+  };
+}
+
 function updateBOM() {
   const grid = document.getElementById('bomGrid');
   if (!grid) return;
@@ -234,7 +314,7 @@ function updateBOM() {
       <span class="bom-key">Mzaoud bolsters</span><span class="bom-val">${b.bolsterCount}</span>
       <span class="bom-key">Mida tables</span><span class="bom-val">${b.midaCount}</span>
     `;
-  } else {
+  } else if (state.product === 'closet') {
     const b = computeClosetBOM();
     grid.innerHTML = `
       <span class="bom-key">Width × Height</span><span class="bom-val">${b.width} × ${b.height} m</span>
@@ -249,6 +329,25 @@ function updateBOM() {
       <div class="bom-divider"></div><div class="bom-divider"></div>
       <span class="bom-key">Board area</span><span class="bom-val">${b.boardArea} m²</span>
     `;
+  } else {
+    const b = computeKitchenBOM();
+    grid.innerHTML = `
+      <span class="bom-key">Width × Height</span><span class="bom-val">${b.width} × ${b.height} m</span>
+      <span class="bom-key">Counter depth</span><span class="bom-val">${b.depth} m</span>
+      <span class="bom-key">Counter run</span><span class="bom-val">${b.linearCab} m</span>
+      <div class="bom-divider"></div><div class="bom-divider"></div>
+      <span class="bom-key">Sink zone</span><span class="bom-val">${b.sinkW} m</span>
+      <span class="bom-key">Cooktop zone</span><span class="bom-val">${b.cooktopW} m</span>
+      <span class="bom-key">Column</span><span class="bom-val">${b.columnW} m</span>
+      <div class="bom-divider"></div><div class="bom-divider"></div>
+      <span class="bom-key">Base cabinets</span><span class="bom-val">${b.baseCabCount}</span>
+      <span class="bom-key">Upper cabinets</span><span class="bom-val">${b.upperCabCount}</span>
+      <span class="bom-key">Drawers</span><span class="bom-val">${b.drawerCount}</span>
+      <span class="bom-key">Appliances</span><span class="bom-val">${b.applianceCount}</span>
+      <div class="bom-divider"></div><div class="bom-divider"></div>
+      <span class="bom-key">Counter area</span><span class="bom-val">${b.counterArea} m²</span>
+      <span class="bom-key">Backsplash area</span><span class="bom-val">${b.backsplashArea} m²</span>
+    `;
   }
 }
 
@@ -260,12 +359,21 @@ function applyProductUI() {
   document.querySelectorAll('.product-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.product === state.product);
   });
-  document.getElementById('salonPanel').style.display  = state.product === 'salon'  ? '' : 'none';
-  document.getElementById('closetPanel').style.display = state.product === 'closet' ? '' : 'none';
-  document.getElementById('salonColors').style.display  = state.product === 'salon'  ? '' : 'none';
-  document.getElementById('closetColors').style.display = state.product === 'closet' ? '' : 'none';
-  document.getElementById('productSubLabel').textContent =
-    state.product === 'salon' ? 'Salon sur mesure — ميزان' : 'Closet sur mesure — خزانة';
+  const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? '' : 'none'; };
+  show('salonPanel',   state.product === 'salon');
+  show('closetPanel',  state.product === 'closet');
+  show('kitchenPanel', state.product === 'kitchen');
+  show('salonColors',  state.product === 'salon');
+  show('closetColors', state.product === 'closet');
+  show('kitchenColors', state.product === 'kitchen');
+
+  const subLabel = document.getElementById('productSubLabel');
+  if (subLabel) {
+    subLabel.textContent =
+      state.product === 'salon'  ? 'Salon sur mesure — ميزان' :
+      state.product === 'closet' ? 'Closet sur mesure — خزانة' :
+                                   'Kitchen sur mesure — مطبخ';
+  }
 }
 
 document.querySelectorAll('.product-btn').forEach(btn => {
@@ -309,6 +417,25 @@ bindSlider('midaHeight',    'midaHeight',    'midaHeightVal');
 bindSlider('closetWidth',  'closetWidth',  'closetWidthVal');
 bindSlider('closetHeight', 'closetHeight', 'closetHeightVal');
 bindSlider('closetDepth',  'closetDepth',  'closetDepthVal');
+
+// Kitchen sliders
+bindSlider('kitchenWidth',         'kitchenWidth',         'kitchenWidthVal');
+bindSlider('kitchenHeight',        'kitchenHeight',        'kitchenHeightVal');
+bindSlider('kitchenDepth',         'kitchenDepth',         'kitchenDepthVal');
+bindSlider('kitchenCounterHeight', 'kitchenCounterHeight', 'kitchenCounterHeightVal');
+bindSlider('kitchenPlinthHeight',  'kitchenPlinthHeight',  'kitchenPlinthHeightVal');
+bindSlider('kitchenUpperHeight',   'kitchenUpperHeight',   'kitchenUpperHeightVal');
+bindSlider('kitchenColumnWidth',   'kitchenColumnWidth',   'kitchenColumnWidthVal');
+bindSlider('kitchenSinkRatio',     'kitchenSinkRatio',     'kitchenSinkRatioVal', '', 2);
+
+function bindToggle(id, stateKey) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('change', () => { state[stateKey] = el.checked; rebuild(); });
+}
+bindToggle('kitchenShowHood', 'kitchenShowHood');
+bindToggle('kitchenShowOven', 'kitchenShowOven');
+bindToggle('kitchenShowMW',   'kitchenShowMW');
 
 const colCountEl  = document.getElementById('closetColCount');
 const colCountVal = document.getElementById('closetColCountVal');
@@ -412,6 +539,11 @@ bindColor('colorLehhaf',     'colorLehhaf');
 bindColor('colorCase',       'colorCase');
 bindColor('colorDrawer',     'colorDrawer');
 bindColor('colorInterior',   'colorInterior');
+bindColor('colorUpperCab',   'colorUpperCab');
+bindColor('colorBaseCab',    'colorBaseCab');
+bindColor('colorCounter',    'colorCounter');
+bindColor('colorAppliance',  'colorAppliance');
+bindColor('colorPlinth',     'colorPlinth');
 
 // Collapsible BOM
 const bomToggle = document.getElementById('bomToggle');
